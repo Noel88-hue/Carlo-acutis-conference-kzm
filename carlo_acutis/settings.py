@@ -47,7 +47,7 @@ INSTALLED_APPS = [
 # production on Railway). Locally, uploaded images just go to /media/ on disk.
 USE_CLOUDINARY = bool(os.environ.get('CLOUDINARY_URL'))
 if USE_CLOUDINARY:
-    INSTALLED_APPS = ['cloudinary_storage'] + INSTALLED_APPS + ['cloudinary']
+    INSTALLED_APPS += ['cloudinary']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -123,8 +123,6 @@ STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-if USE_CLOUDINARY:
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
