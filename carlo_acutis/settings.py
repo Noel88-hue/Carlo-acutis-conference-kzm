@@ -115,6 +115,8 @@ STORAGES = {
     },
 }
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 # ── Media files (uploaded photos/documents) ───────────────────────────────────
 # Locally: saved to /media/ on disk. On Railway: stored permanently on
 # Cloudinary instead, since Railway's own disk is wiped on every deploy.
