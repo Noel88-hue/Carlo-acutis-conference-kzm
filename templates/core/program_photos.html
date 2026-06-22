@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Manage Photos — {{ program.title }}{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <h1>Photos: {{ program.title }}</h1>
+  </div>
+</section>
+<section class="container py-5">
+  <div class="row g-5">
+    <div class="col-lg-5">
+      <div class="form-card">
+        <h5 class="mb-3" style="font-family:'Playfair Display',serif;">Add a Photo</h5>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ form|crispy }}
+          <button type="submit" class="btn-gold w-100 mt-3">Upload Photo</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <div class="row g-3">
+        {% for photo in photos %}
+        <div class="col-md-6">
+          <div class="card-custom">
+            <img src="{{ photo.image.url }}" style="width:100%; height:160px; object-fit:cover;" alt="{{ photo.caption }}">
+            <div class="p-3">
+              <p class="small text-muted mb-2">{{ photo.caption|default:"No caption" }}</p>
+              <a href="{% url 'photo_delete' photo.pk %}" class="btn btn-sm btn-outline-danger w-100">Remove</a>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <p class="text-muted">No photos uploaded yet.</p>
+        {% endfor %}
+      </div>
+      <a href="{% url 'program_detail' program.pk %}" class="btn-outline-gold mt-3 d-inline-block">Done — View Program</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

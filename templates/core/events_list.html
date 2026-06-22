@@ -1,0 +1,63 @@
+{% extends 'core/base.html' %}
+{% block title %}Events — Kizhakkambalam Conference{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <nav style="font-size:0.85rem;" class="mb-2"><a href="{% url 'home' %}" style="color:var(--gold);">Home</a> <span style="color:rgba(255,255,255,0.3);">/</span> <span style="color:rgba(255,255,255,0.6);">Events</span></nav>
+    <h1>Conference Events</h1>
+    <p style="color:rgba(255,255,255,0.6);">What's coming up — and what we've already done.</p>
+  </div>
+</section>
+
+<section class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 style="font-family:'Playfair Display',serif; color:var(--navy);">Upcoming</h3>
+    {% if user.is_authenticated %}<a href="{% url 'event_create' %}" class="btn-navy"><i class="fas fa-plus me-1"></i>Add Event</a>{% endif %}
+  </div>
+
+  {% if upcoming %}
+  <div class="row g-4 mb-5">
+    {% for e in upcoming %}
+    <div class="col-md-4 reveal">
+      <div class="card-custom h-100">
+        {% if e.banner %}<img src="{{ e.banner.url }}" class="card-img-top" alt="{{ e.title }}">{% endif %}
+        <div class="p-4">
+          <span class="badge-gold badge-status-{{ e.status }}">{{ e.get_status_display }}</span>
+          <h5 class="mt-2" style="font-family:'Playfair Display',serif;"><a href="{% url 'event_detail' e.pk %}" class="text-decoration-none text-dark">{{ e.title }}</a></h5>
+          <p class="text-muted small mb-2"><i class="far fa-calendar me-1"></i>{{ e.date|date:"M d, Y" }}{% if e.time %} · {{ e.time|time:"g:i A" }}{% endif %}</p>
+          <p class="small text-muted">{{ e.description|truncatewords:16 }}</p>
+          {% if user.is_authenticated %}
+          <div class="d-flex gap-2 mt-2">
+            <a href="{% url 'event_edit' e.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+            <a href="{% url 'event_delete' e.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-muted">No upcoming events scheduled.</p>
+  {% endif %}
+
+  {% if past %}
+  <h3 style="font-family:'Playfair Display',serif; color:var(--navy);" class="mb-3">Past Events</h3>
+  <div class="table-responsive">
+    <table class="table table-custom card-custom">
+      <thead><tr><th>Event</th><th>Date</th><th>Status</th><th>Venue</th></tr></thead>
+      <tbody>
+        {% for e in past %}
+        <tr>
+          <td><a href="{% url 'event_detail' e.pk %}" class="text-decoration-none fw-medium">{{ e.title }}</a></td>
+          <td>{{ e.date|date:"M d, Y" }}</td>
+          <td><span class="badge-gold badge-status-{{ e.status }}">{{ e.get_status_display }}</span></td>
+          <td>{{ e.venue|default:"—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

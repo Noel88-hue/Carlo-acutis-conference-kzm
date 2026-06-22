@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+db.sqlite3
+.env
+staticfiles/
+media/*
+!media/.gitkeep
+!media/programs/.gitkeep
+!media/events/.gitkeep
+!media/reports/.gitkeep
+!media/gallery/.gitkeep
+!media/support/.gitkeep
+venv/
+.venv/
+*.sqlite3
+.vscode/settings.json

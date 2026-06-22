@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Kizhakkambalam Conference — Carlo Acutis{% endblock %}</title>
+  <link rel="icon" type="image/png" href="{% static 'images/logo.png' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8D08A;
+      --navy: #0E1B2E;
+      --navy-mid: #1A2F4A;
+      --cream: #FAF7F2;
+      --text: #1C1C1E;
+      --muted: #6B7280;
+      --white: #FFFFFF;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(14,27,46,0.10);
+      --shadow-lg: 0 12px 48px rgba(14,27,46,0.18);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; }
+    h1,h2,h3,.display-font { font-family: 'Playfair Display', serif; }
+
+    /* ── Navbar ── */
+    .navbar-custom {
+      background: rgba(14,27,46,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+      padding: 0.75rem 0;
+      position: sticky; top: 0; z-index: 1000;
+      transition: all 0.3s;
+    }
+    .navbar-brand-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--gold) !important;
+      letter-spacing: 0.02em;
+    }
+    .navbar-brand-sub { font-family: 'Inter', sans-serif; font-size: 0.65rem; color: rgba(255,255,255,0.5); display: block; letter-spacing: 0.15em; text-transform: uppercase; }
+    .nav-link-custom { color: rgba(255,255,255,0.75) !important; font-size: 0.875rem; font-weight: 400; padding: 0.5rem 0.9rem !important; border-radius: 6px; transition: all 0.2s; letter-spacing: 0.01em; }
+    .nav-link-custom:hover, .nav-link-custom.active { color: var(--gold) !important; background: rgba(201,168,76,0.08); }
+    .nav-cta { background: var(--gold) !important; color: var(--navy) !important; font-weight: 600; padding: 0.45rem 1.1rem !important; border-radius: 6px; }
+    .nav-cta:hover { background: var(--gold-light) !important; }
+
+    /* ── Cards ── */
+    .card-custom {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid rgba(14,27,46,0.06);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform 0.28s cubic-bezier(.34,1.56,.64,1), box-shadow 0.28s;
+    }
+    .card-custom:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .card-custom .card-img-top { height: 200px; object-fit: cover; }
+    .card-accent { border-top: 3px solid var(--gold); }
+
+    /* ── Buttons ── */
+    .btn-gold { background: var(--gold); color: var(--navy); font-weight: 600; border: none; border-radius: 8px; padding: 0.55rem 1.4rem; transition: all 0.2s; }
+    .btn-gold:hover { background: var(--gold-light); color: var(--navy); transform: translateY(-1px); }
+    .btn-navy { background: var(--navy); color: var(--white); font-weight: 500; border: none; border-radius: 8px; padding: 0.55rem 1.4rem; transition: all 0.2s; }
+    .btn-navy:hover { background: var(--navy-mid); color: var(--white); }
+    .btn-outline-gold { border: 1.5px solid var(--gold); color: var(--gold); background: transparent; border-radius: 8px; padding: 0.5rem 1.2rem; font-weight: 500; transition: all 0.2s; }
+    .btn-outline-gold:hover { background: var(--gold); color: var(--navy); }
+
+    /* ── Section titles ── */
+    .section-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--navy); line-height: 1.2; }
+    .section-divider { width: 48px; height: 3px; background: var(--gold); border-radius: 2px; margin: 1rem 0 1.5rem; }
+
+    /* ── Page hero strip ── */
+    .page-hero { background: var(--navy); padding: 3rem 0; color: var(--white); }
+    .page-hero h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; }
+    .page-hero .breadcrumb-item a { color: var(--gold); }
+    .page-hero .breadcrumb-item.active { color: rgba(255,255,255,0.6); }
+    .page-hero .breadcrumb-separator { color: rgba(255,255,255,0.3); }
+
+    /* ── Stat cards ── */
+    .stat-card { background: var(--white); border-radius: var(--radius); padding: 1.5rem; border-left: 4px solid var(--gold); box-shadow: var(--shadow); }
+    .stat-number { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: var(--navy); font-weight: 700; }
+    .stat-label { font-size: 0.8rem; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.2rem; }
+
+    /* ── Badge ── */
+    .badge-gold { background: rgba(201,168,76,0.15); color: #8B6914; font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.7rem; border-radius: 20px; }
+    .badge-status-planned { background: #EFF6FF; color: #1D4ED8; }
+    .badge-status-confirmed { background: #F0FDF4; color: #15803D; }
+    .badge-status-cancelled { background: #FEF2F2; color: #DC2626; }
+    .badge-status-completed { background: #F5F3FF; color: #6D28D9; }
+
+    /* ── Animations ── */
+    @keyframes fadeInUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    @keyframes shimmer { 0%,100% { opacity:0.6; } 50% { opacity:1; } }
+    .anim-fade-up { animation: fadeInUp 0.6s ease both; }
+    .anim-fade { animation: fadeIn 0.5s ease both; }
+    .delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; } .delay-4 { animation-delay: 0.4s; }
+
+    /* ── Scroll reveal ── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Footer ── */
+    footer {
+      position: relative;
+      color: rgba(255,255,255,0.78);
+      padding: 3rem 0 1.5rem;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    footer .footer-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('{% static "images/church.png" %}');
+      background-size: cover;
+      background-position: center 30%;
+      z-index: -2;
+    }
+    footer .footer-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(14,27,46,0.55) 0%, rgba(14,27,46,0.72) 55%, rgba(14,27,46,0.88) 100%);
+      z-index: -1;
+    }
+    footer h5 { color: var(--gold); font-family: 'Playfair Display', serif; margin-bottom: 0.75rem; font-size: 1.1rem; text-shadow: 0 1px 8px rgba(0,0,0,0.6); }
+    footer a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.875rem; text-shadow: 0 1px 6px rgba(0,0,0,0.5); }
+    footer a:hover { color: var(--gold); }
+    footer p { text-shadow: 0 1px 6px rgba(0,0,0,0.5); }
+    footer .footer-bottom { border-top: 1px solid rgba(255,255,255,0.18); padding-top: 1.2rem; margin-top: 2rem; font-size: 0.8rem; text-shadow: 0 1px 6px rgba(0,0,0,0.5); }
+    footer .footer-location { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.9); text-shadow: 0 1px 6px rgba(0,0,0,0.5); }
+    footer .footer-location i { color: var(--gold); }
+
+    /* ── Toast ── */
+    .toast-custom { position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 280px; }
+    .alert-success-custom { background: #F0FDF4; border-left: 4px solid #16A34A; color: #15803D; border-radius: 8px; padding: 0.85rem 1.2rem; }
+    .alert-error-custom { background: #FEF2F2; border-left: 4px solid #DC2626; color: #DC2626; border-radius: 8px; padding: 0.85rem 1.2rem; }
+
+    /* ── Table ── */
+    .table-custom th { background: var(--navy); color: rgba(255,255,255,0.85); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em; padding: 0.85rem 1rem; }
+    .table-custom td { padding: 0.85rem 1rem; vertical-align: middle; border-color: rgba(14,27,46,0.06); }
+    .table-custom tbody tr:hover { background: rgba(201,168,76,0.04); }
+
+    /* ── Form ── */
+    .form-control, .form-select { border: 1.5px solid #E5E7EB; border-radius: 8px; padding: 0.65rem 1rem; font-size: 0.9rem; transition: border-color 0.2s, box-shadow 0.2s; }
+    .form-control:focus, .form-select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.12); outline: none; }
+    .form-label { font-size: 0.875rem; font-weight: 500; color: var(--navy); margin-bottom: 0.4rem; }
+    .form-card { background: var(--white); border-radius: 16px; box-shadow: var(--shadow-lg); padding: 2.5rem; max-width: 780px; margin: 0 auto; }
+
+    /* ── Gold line heading ── */
+    .gold-line { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+    .gold-line::after { content:''; flex:1; height:1px; background: linear-gradient(to right, var(--gold), transparent); }
+
+    /* ── Image lightbox overlay ── */
+    .lightbox-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.88); z-index:9999; align-items:center; justify-content:center; }
+    .lightbox-overlay.active { display:flex; }
+    .lightbox-img { max-height:85vh; max-width:90vw; border-radius:8px; box-shadow:0 8px 60px rgba(0,0,0,0.5); }
+    .lightbox-close { position:absolute; top:1.5rem; right:2rem; color:white; font-size:2rem; cursor:pointer; }
+
+    /* ── Sidebar dashboard ── */
+    .sidebar { background: var(--navy); min-height: calc(100vh - 66px); padding: 1.5rem 0; width: 240px; position: fixed; left: 0; top: 66px; overflow-y: auto; transition: transform 0.3s; z-index: 900; }
+    .sidebar .nav-link { color: rgba(255,255,255,0.65); font-size: 0.875rem; padding: 0.6rem 1.5rem; border-radius: 0; display: flex; align-items: center; gap: 0.7rem; transition: all 0.2s; }
+    .sidebar .nav-link:hover, .sidebar .nav-link.active { color: var(--gold); background: rgba(201,168,76,0.08); border-right: 3px solid var(--gold); }
+    .sidebar .nav-link i { width: 18px; text-align: center; }
+    .sidebar-section { font-size: 0.65rem; color: rgba(255,255,255,0.3); letter-spacing: 0.15em; text-transform: uppercase; padding: 1rem 1.5rem 0.3rem; }
+    .main-content { margin-left: 240px; padding: 2rem; min-height: calc(100vh - 66px); }
+
+    /* ── Google Translate widget cleanup ── */
+    .goog-te-banner-frame, .goog-te-gadget-icon { display: none !important; }
+    body { top: 0 !important; }
+    .goog-tooltip, .goog-tooltip:hover { display: none !important; }
+    .goog-text-highlight { background: none !important; box-shadow: none !important; }
+    #google_translate_element { display: none !important; }
+
+    /* ── Page-wide saintly watermarks (St. Vincent left, Carlo Acutis right) ── */
+    .page-figure-bg {
+      position: fixed;
+      top: 0;
+      height: 100vh;
+      z-index: -10;
+      pointer-events: none;
+      opacity: 0.06;
+      filter: grayscale(15%);
+    }
+    .page-figure-left {
+      left: 0;
+      width: 280px;
+      background-image: url("{% static 'images/vincent_de_paul.png' %}");
+      background-repeat: no-repeat;
+      background-position: left center;
+      background-size: contain;
+    }
+    .page-figure-right {
+      right: 0;
+      width: 280px;
+      background-image: url("{% static 'images/carlo_acutis.png' %}");
+      background-repeat: no-repeat;
+      background-position: right center;
+      background-size: contain;
+      mask-image: linear-gradient(to left, black 60%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to left, black 60%, transparent 100%);
+    }
+    @media (max-width: 1200px) {
+      .page-figure-bg { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main-content { margin-left: 0; padding: 1rem; }
+      .stat-number { font-size: 1.8rem; }
+    }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar-custom">
+  <div class="container">
+    <div class="d-flex align-items-center justify-content-between w-100">
+      <a href="{% url 'home' %}" class="text-decoration-none d-flex align-items-center gap-2">
+        <img src="{% static 'images/logo.png' %}" alt="SSVP Youth Wing — Kizhakkambalam Conference logo" style="width:44px; height:44px; object-fit:contain;">
+        <div>
+          <span class="navbar-brand-text">Carlo Acutis</span>
+          <span class="navbar-brand-sub">Kizhakkambalam Conference</span>
+        </div>
+      </a>
+
+      <button class="navbar-toggler d-md-none border-0" onclick="document.getElementById('navMenu').classList.toggle('d-none')" style="background:none;color:white;font-size:1.3rem;">☰</button>
+
+      <div id="navMenu" class="d-none d-md-flex align-items-center gap-1 flex-wrap">
+        <a href="{% url 'about' %}" class="nav-link-custom {% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a>
+        <a href="{% url 'programs_list' %}" class="nav-link-custom {% if request.resolver_match.url_name == 'programs_list' %}active{% endif %}">Programs</a>
+        <a href="{% url 'events_list' %}" class="nav-link-custom {% if request.resolver_match.url_name == 'events_list' %}active{% endif %}">Events</a>
+        <a href="{% url 'funds' %}" class="nav-link-custom {% if request.resolver_match.url_name == 'funds' %}active{% endif %}">Funds</a>
+        <a href="{% url 'reports_list' %}" class="nav-link-custom {% if request.resolver_match.url_name == 'reports_list' %}active{% endif %}">Reports</a>
+        <a href="{% url 'gallery' %}" class="nav-link-custom {% if request.resolver_match.url_name == 'gallery' %}active{% endif %}">Gallery</a>
+        <a href="{% url 'support' %}" class="nav-link-custom {% if request.resolver_match.url_name == 'support' %}active{% endif %}">Support</a>
+        <button id="malayalamToggle" class="nav-link-custom" style="border:1px solid rgba(201,168,76,0.4); background:transparent; cursor:pointer;" title="Translate to Malayalam">
+          <i class="fas fa-language me-1"></i>മലയാളം
+        </button>
+        {% if user.is_authenticated %}
+          <a href="{% url 'dashboard' %}" class="nav-link-custom nav-cta ms-2">Dashboard</a>
+          <a href="{% url 'logout' %}" class="nav-link-custom" style="color:rgba(255,255,255,0.4)!important;">Logout</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="nav-link-custom nav-cta ms-2">Admin Login</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Messages -->
+{% if messages %}
+<div class="toast-custom">
+  {% for msg in messages %}
+  <div class="alert {% if msg.tags == 'error' %}alert-error-custom{% else %}alert-success-custom{% endif %} d-flex align-items-center gap-2 mb-2" role="alert" id="msg-{{ forloop.counter }}">
+    <i class="fas {% if msg.tags == 'error' %}fa-circle-exclamation{% else %}fa-circle-check{% endif %}"></i>
+    {{ msg }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% block full_content %}
+<div class="page-figure-bg page-figure-left" aria-hidden="true"></div>
+<div class="page-figure-bg page-figure-right" aria-hidden="true"></div>
+<main>{% block content %}{% endblock %}</main>
+{% endblock %}
+
+<!-- Footer -->
+<footer>
+  <div class="footer-bg"></div>
+  <div class="footer-overlay"></div>
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <h5>Kizhakkambalam Conference</h5>
+        <p style="font-size:0.85rem;line-height:1.7;">Inspired by the Blessed Carlo Acutis — living faith through service, community, and the works of mercy.</p>
+        <div class="footer-location mt-3">
+          <i class="fas fa-location-dot"></i>
+          <span>St. Antony's Church, Kizhakkambalam, Kerala, India</span>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <h5 style="font-size:0.95rem;">Navigate</h5>
+        <div class="d-flex flex-column gap-1">
+          <a href="{% url 'about' %}">About Us</a>
+          <a href="{% url 'programs_list' %}">Social Programs</a>
+          <a href="{% url 'events_list' %}">Events</a>
+          <a href="{% url 'funds' %}">Funds</a>
+          <a href="{% url 'reports_list' %}">Reports</a>
+          <a href="{% url 'gallery' %}">Gallery</a>
+          <a href="{% url 'support' %}">Support Our Work</a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <h5 style="font-size:0.95rem;">Quick Links</h5>
+        <div class="d-flex flex-column gap-1">
+          {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}">Admin Dashboard</a>
+            <a href="{% url 'program_create' %}">Add Program</a>
+            <a href="{% url 'event_create' %}">Add Event</a>
+          {% else %}
+            <a href="{% url 'login' %}">Admin Login</a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-md-3">
+        <h5 style="font-size:0.95rem;">About</h5>
+        <p style="font-size:0.82rem;line-height:1.6;">"You only have to be ordinary, but do ordinary things extraordinarily well." — Carlo Acutis</p>
+      </div>
+    </div>
+    <div class="footer-bottom text-center">
+      <span>© {% now "Y" %} Kizhakkambalam Conference. Built with faith &amp; purpose.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Lightbox -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close">&times;</span>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="" />
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Auto-dismiss messages
+  document.querySelectorAll('[id^="msg-"]').forEach(el => {
+    setTimeout(() => { el.style.opacity='0'; el.style.transition='opacity 0.5s'; setTimeout(()=>el.remove(),500); }, 4000);
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) { e.target.style.transitionDelay = (i * 0.07) + 's'; e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Lightbox
+  function openLightbox(src) {
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox(); });
+
+  // ── Malayalam translation toggle (Google Translate widget, client-side) ──
+  // Hidden translate element required by Google's script
+  const gtDiv = document.createElement('div');
+  gtDiv.id = 'google_translate_element';
+  gtDiv.style.display = 'none';
+  document.body.appendChild(gtDiv);
+
+  window.googleTranslateElementInit = function () {
+    new google.translate.TranslateElement(
+      { pageLanguage: 'en', includedLanguages: 'ml,en', autoDisplay: false },
+      'google_translate_element'
+    );
+  };
+
+  function loadGoogleTranslate() {
+    if (document.getElementById('google-translate-script')) return;
+    const script = document.createElement('script');
+    script.id = 'google-translate-script';
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    document.body.appendChild(script);
+  }
+
+  function setGoogTransCookie(lang) {
+    const value = lang ? `/en/${lang}` : '';
+    document.cookie = `googtrans=${value};path=/`;
+    document.cookie = `googtrans=${value};path=/;domain=${window.location.hostname}`;
+  }
+
+  function isMalayalamActive() {
+    return document.cookie.includes('googtrans=/en/ml');
+  }
+
+  function updateToggleLabel() {
+    const btn = document.getElementById('malayalamToggle');
+    if (!btn) return;
+    btn.innerHTML = isMalayalamActive()
+      ? '<i class="fas fa-language me-1"></i>English'
+      : '<i class="fas fa-language me-1"></i>മലയാളം';
+  }
+
+  document.getElementById('malayalamToggle').addEventListener('click', function () {
+    if (isMalayalamActive()) {
+      setGoogTransCookie('');
+    } else {
+      loadGoogleTranslate();
+      setGoogTransCookie('ml');
+    }
+    location.reload();
+  });
+
+  updateToggleLabel();
+  if (isMalayalamActive()) {
+    loadGoogleTranslate();
+  }
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

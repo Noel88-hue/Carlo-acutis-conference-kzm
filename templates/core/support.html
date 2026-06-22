@@ -1,0 +1,74 @@
+{% extends 'core/base.html' %}
+{% block title %}Support Our Work — Kizhakkambalam Conference{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <nav style="font-size:0.85rem;" class="mb-2"><a href="{% url 'home' %}" style="color:var(--gold);">Home</a> <span style="color:rgba(255,255,255,0.3);">/</span> <span style="color:rgba(255,255,255,0.6);">Support Our Work</span></nav>
+    <h1>Support Our Work</h1>
+    <p style="color:rgba(255,255,255,0.6);">For those who wish to contribute to the conference's social mission.</p>
+  </div>
+</section>
+
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+
+      <!-- Scripture verse -->
+      <div class="text-center mb-5 reveal">
+        <p style="font-family:'Playfair Display',serif; font-style:italic; color:var(--navy); font-size:1.3rem; line-height:1.8; max-width:640px; margin:0 auto;">
+          "But when you give to the needy, do not let your left hand know what your right hand is doing,
+          so that your giving may be in secret. Then your Father, who sees what is done in secret,
+          will reward you."
+        </p>
+        <p class="mt-2" style="color:var(--gold); font-weight:600; letter-spacing:0.05em;">— Matthew 6:3–4</p>
+      </div>
+
+      {% if info %}
+      <div class="card-custom p-5 text-center reveal">
+        {% if info.qr_code %}
+          <h5 class="mb-3" style="font-family:'Playfair Display',serif; color:var(--navy);">Scan to Give</h5>
+          <img src="{{ info.qr_code.url }}" alt="Donation QR Code" style="max-width:260px; width:100%; border-radius:12px; border:1px solid rgba(14,27,46,0.08); padding:1rem; background:white;">
+        {% else %}
+          <div class="py-4">
+            <i class="fas fa-qrcode" style="font-size:2.5rem; color:#D1D5DB;"></i>
+            <p class="text-muted mt-3">The QR code has not been added yet. Please check back soon.</p>
+          </div>
+        {% endif %}
+
+        {% if info.bank_name or info.account_number or info.upi_id %}
+        <hr class="my-4">
+        <h6 class="text-muted text-uppercase small mb-3" style="letter-spacing:0.08em;">Bank Details</h6>
+        <div class="text-start mx-auto" style="max-width:380px;">
+          {% if info.bank_name %}<div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted small">Bank</span><span class="fw-medium">{{ info.bank_name }}</span></div>{% endif %}
+          {% if info.account_name %}<div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted small">Account Name</span><span class="fw-medium text-end">{{ info.account_name }}</span></div>{% endif %}
+          {% if info.account_number %}<div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted small">Account No.</span><span class="fw-medium">{{ info.account_number }}</span></div>{% endif %}
+          {% if info.ifsc_code %}<div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted small">IFSC Code</span><span class="fw-medium">{{ info.ifsc_code }}</span></div>{% endif %}
+          {% if info.upi_id %}<div class="d-flex justify-content-between py-2"><span class="text-muted small">UPI ID</span><span class="fw-medium">{{ info.upi_id }}</span></div>{% endif %}
+        </div>
+        {% endif %}
+
+        {% if info.additional_notes %}
+        <p class="text-muted small mt-4 mb-0">{{ info.additional_notes|linebreaks }}</p>
+        {% endif %}
+      </div>
+      {% else %}
+      <div class="card-custom p-5 text-center">
+        <i class="fas fa-qrcode" style="font-size:2.5rem; color:#D1D5DB;"></i>
+        <p class="text-muted mt-3">Giving details have not been added yet. Please check back soon.</p>
+      </div>
+      {% endif %}
+
+      {% if user.is_authenticated %}
+      <div class="text-center mt-4">
+        <a href="{% url 'support_edit' %}" class="btn-outline-gold"><i class="fas fa-pen me-1"></i>Edit Support Page</a>
+      </div>
+      {% endif %}
+
+      <p class="text-center text-muted small mt-5">
+        This page exists purely for transparency. The conference does not process payments directly —
+        any contribution is made entirely at the giver's own discretion, directly to the account shown above.
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}

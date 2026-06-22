@@ -1,0 +1,62 @@
+{% extends 'core/base.html' %}
+{% block title %}Funds — Kizhakkambalam Conference{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <nav style="font-size:0.85rem;" class="mb-2"><a href="{% url 'home' %}" style="color:var(--gold);">Home</a> <span style="color:rgba(255,255,255,0.3);">/</span> <span style="color:rgba(255,255,255,0.6);">Funds</span></nav>
+    <h1>Conference Funds</h1>
+    <p style="color:rgba(255,255,255,0.6);">Transparency in every contribution, raised over time.</p>
+  </div>
+</section>
+
+<section class="container py-5">
+  <div class="row g-4 mb-5">
+    <div class="col-md-4 reveal">
+      <div class="stat-card">
+        <div class="stat-number">₹{{ total|floatformat:0 }}</div>
+        <div class="stat-label">Total Funds Raised</div>
+      </div>
+    </div>
+    {% for b in by_period %}
+    <div class="col-md-4 reveal">
+      <div class="stat-card">
+        <div class="stat-number" style="font-size:1.8rem;">₹{{ b.total|floatformat:0 }}</div>
+        <div class="stat-label">{{ b.period_type|title }} ({{ b.count }} entries)</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 style="font-family:'Playfair Display',serif; color:var(--navy);">All Fund Records</h3>
+    {% if user.is_authenticated %}<a href="{% url 'fund_create' %}" class="btn-navy"><i class="fas fa-plus me-1"></i>Add Fund Record</a>{% endif %}
+  </div>
+
+  <div class="card-custom">
+    <div class="table-responsive">
+      <table class="table table-custom mb-0">
+        <thead><tr><th>Title</th><th>Period</th><th>Date</th><th>Source</th><th>Amount</th>{% if user.is_authenticated %}<th>Actions</th>{% endif %}</tr></thead>
+        <tbody>
+          {% for r in records %}
+          <tr>
+            <td class="fw-medium">{{ r.title }}</td>
+            <td>{{ r.period_label }} <span class="text-muted small">({{ r.get_period_type_display }})</span></td>
+            <td>{{ r.date_recorded|date:"M d, Y" }}</td>
+            <td>{{ r.source|default:"—" }}</td>
+            <td class="fw-bold" style="color:var(--navy);">₹{{ r.amount|floatformat:0 }}</td>
+            {% if user.is_authenticated %}
+            <td>
+              <a href="{% url 'fund_edit' r.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+              <a href="{% url 'fund_delete' r.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+            </td>
+            {% endif %}
+          </tr>
+          {% empty %}
+          <tr><td colspan="6" class="text-center text-muted py-4">No fund records yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}

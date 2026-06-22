@@ -1,0 +1,129 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}About Us — Kizhakkambalam Conference{% endblock %}
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <nav style="font-size:0.85rem;" class="mb-2"><a href="{% url 'home' %}" style="color:var(--gold);">Home</a> <span style="color:rgba(255,255,255,0.3);">/</span> <span style="color:rgba(255,255,255,0.6);">About Us</span></nav>
+    <h1>About the Kizhakkambalam Conference</h1>
+    <p style="color:rgba(255,255,255,0.6);">The youth wing of the Society of St. Vincent de Paul, at St. Antony's Forona Church.</p>
+  </div>
+</section>
+
+<!-- Church image -->
+<section class="position-relative" style="height:380px; overflow:hidden;">
+  <img src="{% static 'images/church_about.jpg' %}" alt="St. Antony's Forona Church, Kizhakkambalam"
+       style="width:100%; height:100%;">
+  <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(14,27,46,0.1) 0%, rgba(14,27,46,0.75) 100%);"></div>
+  <div class="position-absolute bottom-0 start-0 w-100 p-4 text-center">
+    <p style="color:white; font-family:'Playfair Display',serif; font-size:1.1rem; text-shadow:0 2px 10px rgba(0,0,0,0.6);">
+      St. Antony's Forona Church, Kizhakkambalam, Kerala
+    </p>
+  </div>
+</section>
+
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+
+      <div class="reveal mb-5">
+        <div class="section-label">Who We Are</div>
+        <h2 class="section-title">A Youth Wing Rooted in Service</h2>
+        <div class="section-divider"></div>
+        <p style="line-height:1.85; color:#374151; font-size:1.02rem;">
+          The Kizhakkambalam Conference is the youth wing of the <strong>Society of St. Vincent de Paul (SSVP)</strong>,
+          functioning under St. Antony's Forona Church in Kizhakkambalam, Kerala. We carry forward the Society's
+          founding charism — <em>Serviens in Spe</em>, "We Serve in Hope" — through the hands and energy of the
+          parish's young people.
+        </p>
+        <p style="line-height:1.85; color:#374151; font-size:1.02rem;">
+          Our patron is <strong>St. Carlo Acutis</strong>, the young Italian who became known as
+          "God's Influencer" for living an ordinary teenage life — football, video games, friendships — while
+          quietly anchoring it all in daily Mass and the Eucharist. We chose him as our namesake because his
+          witness speaks directly to who we are: young people who don't see faith and ordinary life as separate
+          things, but as one and the same.
+        </p>
+      </div>
+
+      <div class="row g-4 mb-5">
+        <div class="col-md-6 reveal">
+          <div class="card-custom p-4 h-100">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <i class="fas fa-seedling" style="color:var(--gold); font-size:1.2rem;"></i>
+              <h6 class="mb-0" style="font-family:'Playfair Display',serif; color:var(--navy);">Our Roots</h6>
+            </div>
+            <p class="small text-muted mb-0" style="line-height:1.7;">
+              The Society of St. Vincent de Paul was founded in 1833, inspired by St. Vincent de Paul's own
+              17th-century work among Paris's poor and sick. Conferences like ours exist worldwide, each one
+              a small, local circle of volunteers committed to person-to-person charity — not just funding
+              causes, but showing up.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6 reveal">
+          <div class="card-custom p-4 h-100">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <i class="fas fa-cross" style="color:var(--gold); font-size:1.2rem;"></i>
+              <h6 class="mb-0" style="font-family:'Playfair Display',serif; color:var(--navy);">Our Parish Home</h6>
+            </div>
+            <p class="small text-muted mb-0" style="line-height:1.7;">
+              St. Antony's Forona Church in Kizhakkambalam has long been a center of community life in the
+              area. Our conference operates from within this parish, drawing its volunteers, its formation,
+              and its sense of purpose from the same community that gathers here every week.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal mb-5">
+        <div class="section-label">What We Do</div>
+        <h2 class="section-title">Serve · Love · Transform</h2>
+        <div class="section-divider"></div>
+        <p style="line-height:1.85; color:#374151; font-size:1.02rem;">
+          Following the motto on our own seal — <strong>Serve, Love, Transform</strong> — our work spans several
+          areas of parish and community life:
+        </p>
+        <div class="row g-3 mt-3">
+          <div class="col-md-6">
+            <div class="d-flex align-items-start gap-3 py-2">
+              <i class="fas fa-hand-holding-heart mt-1" style="color:var(--gold);"></i>
+              <div><strong>Helping the Poor</strong><br><span class="text-muted small">Direct support to families and individuals facing hardship</span></div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="d-flex align-items-start gap-3 py-2">
+              <i class="fas fa-plus-circle mt-1" style="color:var(--gold);"></i>
+              <div><strong>Serving the Sick</strong><br><span class="text-muted small">Visits, comfort, and practical care for the unwell and elderly</span></div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="d-flex align-items-start gap-3 py-2">
+              <i class="fas fa-book-open mt-1" style="color:var(--gold);"></i>
+              <div><strong>Education &amp; Mentoring</strong><br><span class="text-muted small">Tutoring and guidance for children in our community</span></div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="d-flex align-items-start gap-3 py-2">
+              <i class="fas fa-people-group mt-1" style="color:var(--gold);"></i>
+              <div><strong>Building Community</strong><br><span class="text-muted small">Gatherings and formation that keep our youth wing united in purpose</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="text-muted small mt-3" style="line-height:1.7;">
+          This website exists to keep a clear, transparent record of that work — every social program we run,
+          every event we plan, every rupee raised, and the minutes from every meeting where we decide what comes next.
+        </p>
+      </div>
+
+      <div class="card-custom p-4 text-center reveal" style="background:var(--navy);">
+        <p style="font-family:'Playfair Display',serif; font-style:italic; color:var(--gold-light); font-size:1.15rem; margin-bottom:0.5rem;">
+          "The measure of love is to love without measure."
+        </p>
+        <p style="color:rgba(255,255,255,0.5); font-size:0.85rem;">— St. Vincent de Paul</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}

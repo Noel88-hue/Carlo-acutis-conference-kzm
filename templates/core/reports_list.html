@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+{% block title %}Meeting Reports — Kizhakkambalam Conference{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <nav style="font-size:0.85rem;" class="mb-2"><a href="{% url 'home' %}" style="color:var(--gold);">Home</a> <span style="color:rgba(255,255,255,0.3);">/</span> <span style="color:rgba(255,255,255,0.6);">Reports</span></nav>
+    <h1>Meeting Reports</h1>
+    <p style="color:rgba(255,255,255,0.6);">Minutes and outcomes from every conference gathering.</p>
+  </div>
+</section>
+<section class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 style="font-family:'Playfair Display',serif; color:var(--navy);">All Reports</h3>
+    {% if user.is_authenticated %}<a href="{% url 'report_create' %}" class="btn-navy"><i class="fas fa-plus me-1"></i>Add Report</a>{% endif %}
+  </div>
+  <div class="row g-4">
+    {% for r in reports %}
+    <div class="col-md-6 reveal">
+      <div class="card-custom p-4 h-100">
+        <h5 style="font-family:'Playfair Display',serif;"><a href="{% url 'report_detail' r.pk %}" class="text-decoration-none text-dark">{{ r.title }}</a></h5>
+        <p class="text-muted small mb-2"><i class="far fa-calendar me-1"></i>{{ r.meeting_date|date:"M d, Y" }} · {{ r.attendees_count }} attendees</p>
+        <p class="small text-muted">{{ r.minutes|truncatewords:20 }}</p>
+        <a href="{% url 'report_detail' r.pk %}" class="btn-outline-gold btn-sm mt-2 d-inline-block">Read Report</a>
+      </div>
+    </div>
+    {% empty %}
+    <p class="text-muted text-center">No reports filed yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

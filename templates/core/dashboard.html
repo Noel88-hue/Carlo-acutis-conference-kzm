@@ -1,0 +1,99 @@
+{% extends 'core/base.html' %}
+{% block title %}Dashboard — Kizhakkambalam Conference{% endblock %}
+{% block full_content %}
+<div class="d-flex">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-section">Overview</div>
+    <a href="{% url 'dashboard' %}" class="nav-link active"><i class="fas fa-grip"></i>Dashboard</a>
+    <div class="sidebar-section">Manage</div>
+    <a href="{% url 'programs_list' %}" class="nav-link"><i class="fas fa-hands-helping"></i>Social Programs</a>
+    <a href="{% url 'events_list' %}" class="nav-link"><i class="fas fa-calendar-days"></i>Upcoming Events</a>
+    <a href="{% url 'funds' %}" class="nav-link"><i class="fas fa-coins"></i>Funds</a>
+    <a href="{% url 'reports_list' %}" class="nav-link"><i class="fas fa-file-lines"></i>Meeting Reports</a>
+    <a href="{% url 'gallery' %}" class="nav-link"><i class="fas fa-images"></i>Gallery</a>
+    <div class="sidebar-section">Quick Add</div>
+    <a href="{% url 'program_create' %}" class="nav-link"><i class="fas fa-plus"></i>New Program</a>
+    <a href="{% url 'event_create' %}" class="nav-link"><i class="fas fa-plus"></i>New Event</a>
+    <a href="{% url 'fund_create' %}" class="nav-link"><i class="fas fa-plus"></i>New Fund Record</a>
+    <a href="{% url 'report_create' %}" class="nav-link"><i class="fas fa-plus"></i>New Report</a>
+    <div class="sidebar-section">Account</div>
+    <a href="/admin/" class="nav-link"><i class="fas fa-screwdriver-wrench"></i>Django Admin</a>
+    <a href="{% url 'logout' %}" class="nav-link"><i class="fas fa-right-from-bracket"></i>Logout</a>
+  </aside>
+
+  <div class="main-content w-100">
+    <div class="anim-fade-up mb-4">
+      <h2 style="font-family:'Playfair Display',serif; color:var(--navy);">Welcome back, {{ user.first_name|default:user.username }} 👋</h2>
+      <p class="text-muted">Here's what's happening with the conference.</p>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-md-2 col-6 reveal"><div class="stat-card"><div class="stat-number" style="font-size:1.8rem;">{{ stats.programs }}</div><div class="stat-label">Programs</div></div></div>
+      <div class="col-md-2 col-6 reveal"><div class="stat-card"><div class="stat-number" style="font-size:1.8rem;">{{ stats.events }}</div><div class="stat-label">Events</div></div></div>
+      <div class="col-md-2 col-6 reveal"><div class="stat-card"><div class="stat-number" style="font-size:1.8rem;">{{ stats.upcoming_events }}</div><div class="stat-label">Upcoming</div></div></div>
+      <div class="col-md-2 col-6 reveal"><div class="stat-card"><div class="stat-number" style="font-size:1.8rem;">{{ stats.reports }}</div><div class="stat-label">Reports</div></div></div>
+      <div class="col-md-2 col-6 reveal"><div class="stat-card"><div class="stat-number" style="font-size:1.8rem;">{{ stats.gallery_images }}</div><div class="stat-label">Photos</div></div></div>
+      <div class="col-md-2 col-6 reveal"><div class="stat-card" style="border-left-color:#16A34A;"><div class="stat-number" style="font-size:1.4rem;">₹{{ stats.total_funds|floatformat:0 }}</div><div class="stat-label">Total Funds</div></div></div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <div class="card-custom p-4 h-100">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 style="font-family:'Playfair Display',serif; color:var(--navy);">Recent Programs</h6>
+            <a href="{% url 'program_create' %}" class="small text-decoration-none" style="color:var(--gold);">+ Add</a>
+          </div>
+          {% for p in recent_programs %}
+          <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+            <div><a href="{% url 'program_detail' p.pk %}" class="text-decoration-none fw-medium small">{{ p.title }}</a><div class="text-muted small">{{ p.date|date:"M d, Y" }}</div></div>
+            <span class="badge-gold">{{ p.get_category_display }}</span>
+          </div>
+          {% empty %}<p class="text-muted small">No programs yet.</p>{% endfor %}
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card-custom p-4 h-100">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 style="font-family:'Playfair Display',serif; color:var(--navy);">Upcoming Events</h6>
+            <a href="{% url 'event_create' %}" class="small text-decoration-none" style="color:var(--gold);">+ Add</a>
+          </div>
+          {% for e in upcoming_events %}
+          <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+            <div><a href="{% url 'event_detail' e.pk %}" class="text-decoration-none fw-medium small">{{ e.title }}</a><div class="text-muted small">{{ e.date|date:"M d, Y" }}</div></div>
+            <span class="badge-gold badge-status-{{ e.status }}">{{ e.get_status_display }}</span>
+          </div>
+          {% empty %}<p class="text-muted small">No upcoming events.</p>{% endfor %}
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card-custom p-4 h-100">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 style="font-family:'Playfair Display',serif; color:var(--navy);">Recent Fund Records</h6>
+            <a href="{% url 'fund_create' %}" class="small text-decoration-none" style="color:var(--gold);">+ Add</a>
+          </div>
+          {% for f in recent_funds %}
+          <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+            <div><span class="fw-medium small">{{ f.title }}</span><div class="text-muted small">{{ f.period_label }}</div></div>
+            <span class="fw-bold small" style="color:var(--navy);">₹{{ f.amount|floatformat:0 }}</span>
+          </div>
+          {% empty %}<p class="text-muted small">No fund records.</p>{% endfor %}
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card-custom p-4 h-100">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 style="font-family:'Playfair Display',serif; color:var(--navy);">Recent Reports</h6>
+            <a href="{% url 'report_create' %}" class="small text-decoration-none" style="color:var(--gold);">+ Add</a>
+          </div>
+          {% for r in recent_reports %}
+          <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+            <a href="{% url 'report_detail' r.pk %}" class="text-decoration-none fw-medium small">{{ r.title }}</a>
+            <span class="text-muted small">{{ r.meeting_date|date:"M d, Y" }}</span>
+          </div>
+          {% empty %}<p class="text-muted small">No reports yet.</p>{% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

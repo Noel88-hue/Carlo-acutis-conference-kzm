@@ -1,0 +1,62 @@
+{% extends 'core/base.html' %}
+{% block title %}Social Programs — Kizhakkambalam Conference{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <nav style="font-size:0.85rem;" class="mb-2"><a href="{% url 'home' %}" style="color:var(--gold);">Home</a> <span style="color:rgba(255,255,255,0.3);">/</span> <span style="color:rgba(255,255,255,0.6);">Programs</span></nav>
+    <h1>Social Work Programs</h1>
+    <p style="color:rgba(255,255,255,0.6);">A record of the community service carried out by the conference.</p>
+  </div>
+</section>
+
+<section class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <div class="d-flex gap-2 flex-wrap">
+      <a href="{% url 'programs_list' %}" class="btn {% if not selected_category %}btn-gold{% else %}btn-outline-gold{% endif %} btn-sm">All</a>
+      {% for key, label in categories %}
+        <a href="?category={{ key }}" class="btn {% if selected_category == key %}btn-gold{% else %}btn-outline-gold{% endif %} btn-sm">{{ label }}</a>
+      {% endfor %}
+    </div>
+    {% if user.is_authenticated %}
+    <a href="{% url 'program_create' %}" class="btn-navy"><i class="fas fa-plus me-1"></i>Add Program</a>
+    {% endif %}
+  </div>
+
+  {% if programs %}
+  <div class="row g-4">
+    {% for p in programs %}
+    <div class="col-md-4 reveal">
+      <div class="card-custom h-100">
+        <a href="{% url 'program_detail' p.pk %}" class="text-decoration-none text-dark">
+          {% if p.photos.first %}
+            <img src="{{ p.photos.first.image.url }}" class="card-img-top" alt="{{ p.title }}">
+          {% else %}
+            <div class="card-img-top d-flex align-items-center justify-content-center" style="background:var(--navy); height:200px;">
+              <span style="font-size:2.5rem; color:var(--gold);">✦</span>
+            </div>
+          {% endif %}
+          <div class="p-4">
+            <span class="badge-gold">{{ p.get_category_display }}</span>
+            <h5 class="mt-2 mb-1" style="font-family:'Playfair Display',serif;">{{ p.title }}</h5>
+            <p class="text-muted small mb-1"><i class="far fa-calendar me-1"></i>{{ p.date|date:"M d, Y" }}</p>
+            <p class="small text-muted mb-0">{{ p.description|truncatewords:14 }}</p>
+          </div>
+        </a>
+        {% if user.is_authenticated %}
+        <div class="px-4 pb-3 d-flex gap-2">
+          <a href="{% url 'program_edit' p.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+          <a href="{% url 'program_delete' p.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-5">
+    <i class="fas fa-hands-helping" style="font-size:2.5rem; color:#D1D5DB;"></i>
+    <p class="text-muted mt-3">No programs recorded yet.</p>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

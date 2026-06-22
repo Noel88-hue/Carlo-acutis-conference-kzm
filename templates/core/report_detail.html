@@ -1,0 +1,53 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ report.title }} — Kizhakkambalam Conference{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <nav style="font-size:0.85rem;" class="mb-2"><a href="{% url 'home' %}" style="color:var(--gold);">Home</a> <span style="color:rgba(255,255,255,0.3);">/</span> <a href="{% url 'reports_list' %}" style="color:var(--gold);">Reports</a> <span style="color:rgba(255,255,255,0.3);">/</span> <span style="color:rgba(255,255,255,0.6);">{{ report.title }}</span></nav>
+    <h1>{{ report.title }}</h1>
+  </div>
+</section>
+<section class="container py-5">
+  <div class="row g-5">
+    <div class="col-lg-8">
+      <div class="gold-line"><h3 style="font-family:'Playfair Display',serif; color:var(--navy); white-space:nowrap;">Minutes</h3></div>
+      <p style="line-height:1.8; color:#374151;">{{ report.minutes|linebreaks }}</p>
+
+      {% if report.agenda %}
+      <div class="gold-line mt-4"><h5 style="font-family:'Playfair Display',serif; color:var(--navy); white-space:nowrap;">Agenda</h5></div>
+      <p style="line-height:1.8; color:#374151;">{{ report.agenda|linebreaks }}</p>
+      {% endif %}
+
+      {% if report.decisions_made %}
+      <div class="gold-line mt-4"><h5 style="font-family:'Playfair Display',serif; color:var(--navy); white-space:nowrap;">Decisions Made</h5></div>
+      <p style="line-height:1.8; color:#374151;">{{ report.decisions_made|linebreaks }}</p>
+      {% endif %}
+
+      {% if report.action_items %}
+      <div class="gold-line mt-4"><h5 style="font-family:'Playfair Display',serif; color:var(--navy); white-space:nowrap;">Action Items</h5></div>
+      <p style="line-height:1.8; color:#374151;">{{ report.action_items|linebreaks }}</p>
+      {% endif %}
+
+      {% if report.attachment %}
+      <a href="{{ report.attachment.url }}" target="_blank" class="btn-gold mt-2 d-inline-block"><i class="fas fa-file-arrow-down me-1"></i>Download Attachment</a>
+      {% endif %}
+
+      {% if user.is_authenticated %}
+      <div class="d-flex gap-2 mt-4">
+        <a href="{% url 'report_edit' report.pk %}" class="btn-outline-gold">Edit Report</a>
+        <a href="{% url 'report_delete' report.pk %}" class="btn btn-outline-danger">Delete</a>
+      </div>
+      {% endif %}
+    </div>
+    <div class="col-lg-4">
+      <div class="card-custom p-4">
+        <h6 class="text-muted text-uppercase small mb-3" style="letter-spacing:0.08em;">Meeting Info</h6>
+        <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted small">Date</span><span class="fw-medium">{{ report.meeting_date|date:"M d, Y" }}</span></div>
+        {% if report.venue %}<div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted small">Venue</span><span class="fw-medium text-end">{{ report.venue }}</span></div>{% endif %}
+        <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted small">Attendees</span><span class="fw-medium">{{ report.attendees_count }}</span></div>
+        {% if report.next_meeting_date %}<div class="d-flex justify-content-between py-2"><span class="text-muted small">Next Meeting</span><span class="fw-medium">{{ report.next_meeting_date|date:"M d, Y" }}</span></div>{% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,53 @@
+<svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="haloGlowV" cx="50%" cy="30%" r="40%">
+      <stop offset="0%" stop-color="#E8D08A" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#C9A84C" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="figureGradV" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1A2F4A"/>
+      <stop offset="100%" stop-color="#0E1B2E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Halo -->
+  <circle cx="200" cy="145" r="100" fill="url(#haloGlowV)"/>
+  <circle cx="200" cy="118" r="56" fill="none" stroke="#C9A84C" stroke-width="2.5" opacity="0.65"/>
+  <circle cx="200" cy="118" r="56" fill="none" stroke="#E8D08A" stroke-width="1" opacity="0.4"/>
+
+  <!-- Head silhouette, older figure -->
+  <ellipse cx="200" cy="128" rx="36" ry="42" fill="url(#figureGradV)"/>
+
+  <!-- soft beard suggestion -->
+  <path d="M172 148 Q176 178 200 182 Q224 178 228 148 Q224 168 200 170 Q176 168 172 148 Z" fill="#0E1B2E" opacity="0.85"/>
+
+  <!-- simple cap/biretta shape -->
+  <path d="M168 96 Q168 70 200 68 Q232 70 232 96 Q232 86 200 84 Q168 86 168 96 Z" fill="#0E1B2E"/>
+
+  <!-- Shoulders / cassock with clerical collar -->
+  <path d="M118 322
+           Q122 232 173 198
+           L182 190
+           Q200 204 218 190
+           L227 198
+           Q278 232 282 322
+           L282 422
+           Q200 442 118 422
+           Z"
+        fill="url(#figureGradV)"/>
+
+  <!-- white clerical collar -->
+  <path d="M178 192 Q200 224 222 192 L222 206 Q200 232 178 206 Z" fill="#F5F2EA" opacity="0.92"/>
+  <rect x="192" y="200" width="16" height="20" fill="#0E1B2E"/>
+
+  <!-- cloak fold lines for texture -->
+  <path d="M150 250 Q145 320 150 400" fill="none" stroke="#0E1B2E" stroke-width="1.5" opacity="0.4"/>
+  <path d="M250 250 Q255 320 250 400" fill="none" stroke="#0E1B2E" stroke-width="1.5" opacity="0.4"/>
+
+  <!-- small radiant cross above halo -->
+  <g transform="translate(200,38)" opacity="0.85">
+    <line x1="0" y1="-18" x2="0" y2="18" stroke="#C9A84C" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-12" y1="-6" x2="12" y2="-6" stroke="#C9A84C" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

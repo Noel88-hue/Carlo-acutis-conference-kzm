@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ program.title }} — Kizhakkambalam Conference{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <nav style="font-size:0.85rem;" class="mb-2"><a href="{% url 'home' %}" style="color:var(--gold);">Home</a> <span style="color:rgba(255,255,255,0.3);">/</span> <a href="{% url 'programs_list' %}" style="color:var(--gold);">Programs</a> <span style="color:rgba(255,255,255,0.3);">/</span> <span style="color:rgba(255,255,255,0.6);">{{ program.title }}</span></nav>
+    <h1>{{ program.title }}</h1>
+    <span class="badge-gold">{{ program.get_category_display }}</span>
+  </div>
+</section>
+
+<section class="container py-5">
+  <div class="row g-5">
+    <div class="col-lg-8">
+      {% if photos %}
+      <div class="row g-2 mb-4">
+        {% for photo in photos %}
+        <div class="col-md-{% if forloop.first %}12{% else %}4{% endif %}">
+          <img src="{{ photo.image.url }}" onclick="openLightbox('{{ photo.image.url }}')" style="width:100%; height:{% if forloop.first %}340{% else %}140{% endif %}px; object-fit:cover; border-radius:12px; cursor:pointer;" alt="{{ photo.caption }}">
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="gold-line"><h3 style="font-family:'Playfair Display',serif; color:var(--navy); white-space:nowrap;">About this Program</h3></div>
+      <p style="line-height:1.8; color:#374151;">{{ program.description|linebreaks }}</p>
+
+      {% if user.is_authenticated %}
+      <div class="d-flex gap-2 mt-4">
+        <a href="{% url 'program_edit' program.pk %}" class="btn-outline-gold">Edit Program</a>
+        <a href="{% url 'program_photos' program.pk %}" class="btn-navy">Manage Photos</a>
+        <a href="{% url 'program_delete' program.pk %}" class="btn btn-outline-danger">Delete</a>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card-custom p-4">
+        <h6 class="text-muted text-uppercase small mb-3" style="letter-spacing:0.08em;">Program Details</h6>
+        <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted small">Date</span><span class="fw-medium">{{ program.date|date:"M d, Y" }}</span></div>
+        {% if program.time %}<div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted small">Time</span><span class="fw-medium">{{ program.time|time:"g:i A" }}</span></div>{% endif %}
+        {% if program.venue %}<div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted small">Venue</span><span class="fw-medium text-end">{{ program.venue }}</span></div>{% endif %}
+        {% if program.beneficiaries %}<div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted small">Beneficiaries</span><span class="fw-medium text-end">{{ program.beneficiaries }}</span></div>{% endif %}
+        <div class="d-flex justify-content-between py-2"><span class="text-muted small">Participants</span><span class="fw-medium">{{ program.participants_count }}</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
