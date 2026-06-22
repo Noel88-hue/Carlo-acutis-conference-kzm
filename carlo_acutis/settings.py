@@ -46,8 +46,12 @@ INSTALLED_APPS = [
 # Cloudinary is only activated when its credentials are present (i.e. in
 # production on Railway). Locally, uploaded images just go to /media/ on disk.
 USE_CLOUDINARY = bool(os.environ.get('CLOUDINARY_URL'))
+
 if USE_CLOUDINARY:
-    INSTALLED_APPS += ['cloudinary']
+    INSTALLED_APPS += [
+        'cloudinary',
+        'cloudinary_storage',
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -106,15 +110,24 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-    },
-}
-
+if USE_CLOUDINARY:
+    STORAGES = {
+        "default": {
+            "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
+else:
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 # ── Media files (uploaded photos/documents) ───────────────────────────────────
